@@ -14,7 +14,7 @@ public class Main {
 		
 		int lastArticleId = 0;
 		
-		List<Article> articles = new ArrayList<>();
+		List<ArticleClass> articles1 = new ArrayList<>();
 		
 		while(true) {
 			System.out.println("====명령어를 입력해 주세요====");
@@ -40,26 +40,53 @@ public class Main {
 				System.out.println("내용을 입력해 주세요 :");
 				String body = sc.nextLine();
 				
-				Article article = new Article(id, title, body);
-				articles.add(article);
+				//클래스이름    객체이름     new연산자가 ArticleClass 클래스 호출 
+				ArticleClass article2 = new ArticleClass(id, title, body);
+				articles1.add(article2);
 				
 				System.out.println(id + " 번 글이 생성되었습니다.");
+				
 			}else if (command.equals("article list")) {
 				
-				if (articles.size() == 0) {
+				if (articles1.size() == 0) {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
 				
 				System.out.println("====LIST====");
 				
-				for (int i = articles.size() - 1; i >= 0; i--) {
- 					Article article = articles.get(i);
+				for (int i = articles1.size() - 1; i >= 0; i--) {
+ 					ArticleClass article4 = articles1.get(i);
 
- 					System.out.println("번호 : " + article.id + " | 제목 : " + article.title);
+ 					System.out.println("번호 : " + article4.id + " | 제목 : " + article4.title);
  				}
 				
-			}else {
+			}else if(command.startsWith("article detail ")) {
+				String[] commandBits = command.split(" ");
+				int id = Integer.parseInt(commandBits[2]);
+				
+				ArticleClass foundArticle = null;
+				
+				for (int i = 0; i < articles1.size(); i++) {
+					ArticleClass article5 = articles1.get(i);
+					
+					if (article5.id == id) {
+						foundArticle = article5;
+						break;
+					}
+				}
+				
+				if (foundArticle == null) {
+					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				System.out.println("번호 : " + foundArticle.id);
+				System.out.println("날짜 : 2020-07-05 15:35:34");
+				System.out.println("제목 : " + foundArticle.title);
+				System.out.println("내용 : " + foundArticle.body);
+				
+			}//detail 끝 
+			else {
 				System.out.println(command + " 는 존재하지 않는 명령어 입니다.");
 			}//article write 끝 
 			
@@ -68,17 +95,16 @@ public class Main {
 		sc.close();
 		
 		System.out.println("====프로그램 종료====");
-	}//main끝 
-}//class main 끝
-
+	}// main끝
+}// class main 끝
 
 //==============class==============
-class Article {
+class ArticleClass {
 	int id;
 	String title;
 	String body;
-	
-	public Article(int id, String title, String body) {
+
+	public ArticleClass(int id, String title, String body) {
 		this.id = id;
 		this.title = title;
 		this.body = body;
