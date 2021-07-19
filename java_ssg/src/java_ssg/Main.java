@@ -86,6 +86,38 @@ public class Main {
 				System.out.println("제목 : " + foundArticle.title);
 				System.out.println("내용 : " + foundArticle.body);
 
+			} else if (command.startsWith("article modify ")) {
+				String[] commandBits = command.split(" ");
+				int id = Integer.parseInt(commandBits[2]);
+
+				ArticleClass foundArticle = null;
+
+				for (int i = 0; i < articles1.size(); i++) {
+					ArticleClass article5 = articles1.get(i);
+
+					if (article5.id == id) {
+						foundArticle = article5;
+						break;
+					}
+				}
+
+				if (foundArticle == null) {
+					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
+					continue;
+				}
+				
+				System.out.println("제목을 입력해 주세요 :");
+				String title = sc.nextLine();
+				System.out.println("내용을 입력해 주세요 :");
+				String body = sc.nextLine();
+				//String regDate = Util.getNowDateStr(); //수정되면 날짜도 변경되게 하고 싶으면.
+				
+				foundArticle.title = title;
+				foundArticle.body = body;
+				//foundArticle.regDate = regDate;
+				
+				System.out.println(id + "번 째 게시물이 수정되었습니다.");
+
 			} else if (command.startsWith("article delete ")) {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
