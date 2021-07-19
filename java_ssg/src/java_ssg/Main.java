@@ -55,11 +55,13 @@ public class Main {
 				}
 
 				System.out.println("====LIST====");
-
+				System.out.println("번호  | 조회  | 제목");
+				
 				for (int i = articles1.size() - 1; i >= 0; i--) {
 					ArticleClass article4 = articles1.get(i);
 
-					System.out.println("번호 : " + article4.id + " | 제목 : " + article4.title);
+//					System.out.println("번호 : " + article4.id + " | 제목 : " + article4.title + " | 조회수 : " + article4.hit);
+					System.out.printf("%4d | %4d | %s\n", article4.id, article4.hit, article4.title);
 				}
 
 			} else if (command.startsWith("article detail ")) {
@@ -81,10 +83,14 @@ public class Main {
 					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
 					continue;
 				}
+
+				foundArticle.increaseHit();
+
 				System.out.println("번호 : " + foundArticle.id);
 				System.out.println("날짜 : " + foundArticle.regDate);
 				System.out.println("제목 : " + foundArticle.title);
 				System.out.println("내용 : " + foundArticle.body);
+				System.out.println("조회수 : " + foundArticle.hit);
 
 			} else if (command.startsWith("article modify ")) {
 				String[] commandBits = command.split(" ");
@@ -105,17 +111,17 @@ public class Main {
 					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
 					continue;
 				}
-				
+
 				System.out.println("제목을 입력해 주세요 :");
 				String title = sc.nextLine();
 				System.out.println("내용을 입력해 주세요 :");
 				String body = sc.nextLine();
-				//String regDate = Util.getNowDateStr(); //수정되면 날짜도 변경되게 하고 싶으면.
-				
+				// String regDate = Util.getNowDateStr(); //수정되면 날짜도 변경되게 하고 싶으면.
+
 				foundArticle.title = title;
 				foundArticle.body = body;
-				//foundArticle.regDate = regDate;
-				
+				// foundArticle.regDate = regDate;
+
 				System.out.println(id + "번 째 게시물이 수정되었습니다.");
 
 			} else if (command.startsWith("article delete ")) {
@@ -161,11 +167,17 @@ class ArticleClass {
 	String regDate;
 	String title;
 	String body;
+	int hit;
 
 	public ArticleClass(int id, String regDate, String title, String body) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
+		this.hit = 0;
+	}
+
+	public void increaseHit() {
+		hit++;
 	}
 }// class article
