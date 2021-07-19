@@ -75,16 +75,7 @@ public class App {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
 
-				ArticleClass foundArticle = null;
-
-				for (int i = 0; i < articles1.size(); i++) {
-					ArticleClass article5 = articles1.get(i);
-
-					if (article5.id == id) {
-						foundArticle = article5;
-						break;
-					}
-				}
+				ArticleClass foundArticle = getArticleById(id);
 
 				if (foundArticle == null) {
 					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
@@ -103,7 +94,7 @@ public class App {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
 
-				ArticleClass foundArticle = null;
+				ArticleClass foundArticle = getArticleById(id);
 
 				for (int i = 0; i < articles1.size(); i++) {
 					ArticleClass article5 = articles1.get(i);
@@ -134,17 +125,17 @@ public class App {
 			} else if (command.startsWith("article delete ")) {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
-
-				int foundIndex = -1;
-
-				for (int i = 0; i < articles1.size(); i++) {
-					ArticleClass article6 = articles1.get(i);
-
-					if (article6.id == id) {
-						foundIndex = i;
-						break;
-					}
-				}
+				
+				int foundIndex = getArticleIndexById(id);
+				
+//				for (int i = 0; i < articles1.size(); i++) {
+//					ArticleClass article6 = articles1.get(i);
+//
+//					if (article6.id == id) {
+//						foundIndex = i;
+//						break;
+//					}
+//				}
 
 				if (foundIndex == -1) {
 					System.out.println(id + " 번 게시물이 존재하지 않습니다.");
@@ -166,6 +157,35 @@ public class App {
 
 		System.out.println("====프로그램 종료====");
 	}// main끝
+
+	private int getArticleIndexById(int id) {
+		int i = 0;
+		for (ArticleClass article5 : articles1) {
+			if (article5.id == id) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
+
+	private ArticleClass getArticleById(int id) {
+		int index = getArticleIndexById(id);
+		
+		if (index != -1) {
+			return articles1.get(index);
+		}
+
+//		for (int i = 0; i < articles1.size(); i++) {
+//			ArticleClass article5 = articles1.get(i);
+//
+//			if (article5.id == id) {
+//				return articles1.get(i);
+//			}
+//		}
+		return null;
+
+	}
 
 	private void makeTestData() {
 		System.out.println("테스트 데이터 생성 ");
