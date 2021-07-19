@@ -5,15 +5,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+
+	private static List<ArticleClass1> articles1;
+
+	static {
+		articles1 = new ArrayList<>();
+	}
+
 	public static void main(String[] args) {
 
 		System.out.println("====프로그램 시작====");
 
+		makeTestData();
+
 		Scanner sc = new Scanner(System.in);
-
-		int lastArticleId = 0;
-
-		List<ArticleClass> articles1 = new ArrayList<>();
 
 		while (true) {
 			System.out.println("====명령어를 입력해 주세요====");
@@ -30,8 +35,7 @@ public class Main {
 
 			// article write 시작
 			if (command.equals("article write")) {
-				int id = lastArticleId + 1;
-				lastArticleId = id;
+				int id = articles1.size() + 1;
 
 				String regDate = Util.getNowDateStr();
 
@@ -42,7 +46,7 @@ public class Main {
 				String body = sc.nextLine();
 
 				// 클래스이름 객체이름 new연산자가 ArticleClass 클래스 호출
-				ArticleClass article2 = new ArticleClass(id, regDate, title, body);
+				ArticleClass1 article2 = new ArticleClass1(id, regDate, title, body);
 				articles1.add(article2);
 
 				System.out.println(id + " 번 글이 생성되었습니다.");
@@ -56,9 +60,9 @@ public class Main {
 
 				System.out.println("====LIST====");
 				System.out.println("번호  | 조회  | 제목");
-				
+
 				for (int i = articles1.size() - 1; i >= 0; i--) {
-					ArticleClass article4 = articles1.get(i);
+					ArticleClass1 article4 = articles1.get(i);
 
 //					System.out.println("번호 : " + article4.id + " | 제목 : " + article4.title + " | 조회수 : " + article4.hit);
 					System.out.printf("%4d | %4d | %s\n", article4.id, article4.hit, article4.title);
@@ -68,10 +72,10 @@ public class Main {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
 
-				ArticleClass foundArticle = null;
+				ArticleClass1 foundArticle = null;
 
 				for (int i = 0; i < articles1.size(); i++) {
-					ArticleClass article5 = articles1.get(i);
+					ArticleClass1 article5 = articles1.get(i);
 
 					if (article5.id == id) {
 						foundArticle = article5;
@@ -96,10 +100,10 @@ public class Main {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
 
-				ArticleClass foundArticle = null;
+				ArticleClass1 foundArticle = null;
 
 				for (int i = 0; i < articles1.size(); i++) {
-					ArticleClass article5 = articles1.get(i);
+					ArticleClass1 article5 = articles1.get(i);
 
 					if (article5.id == id) {
 						foundArticle = article5;
@@ -131,7 +135,7 @@ public class Main {
 				int foundIndex = -1;
 
 				for (int i = 0; i < articles1.size(); i++) {
-					ArticleClass article6 = articles1.get(i);
+					ArticleClass1 article6 = articles1.get(i);
 
 					if (article6.id == id) {
 						foundIndex = i;
@@ -159,22 +163,35 @@ public class Main {
 
 		System.out.println("====프로그램 종료====");
 	}// main끝
+
+	private static void makeTestData() {
+		System.out.println("테스트 데이터 생성 ");
+
+		articles1.add(new ArticleClass1(1, Util.getNowDateStr(), "제목1", "내용1", 33));
+		articles1.add(new ArticleClass1(2, Util.getNowDateStr(), "제목2", "내용2", 66));
+		articles1.add(new ArticleClass1(3, Util.getNowDateStr(), "제목3", "내용3", 100));
+
+	}
 }// class main 끝
 
 //==============class==============
-class ArticleClass {
+class ArticleClass1 {
 	int id;
 	String regDate;
 	String title;
 	String body;
 	int hit;
 
-	public ArticleClass(int id, String regDate, String title, String body) {
+	public ArticleClass1(int id, String regDate, String title, String body) {
+		this(id, regDate, title, body, 0);
+	}
+
+	public ArticleClass1(int id, String regDate, String title, String body, int hit) {
 		this.id = id;
 		this.regDate = regDate;
 		this.title = title;
 		this.body = body;
-		this.hit = 0;
+		this.hit = hit;
 	}
 
 	public void increaseHit() {
