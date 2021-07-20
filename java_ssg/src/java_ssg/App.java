@@ -5,14 +5,17 @@ import java.util.List;
 import java.util.Scanner;
 
 import java_ssg.dto.ArticleClass;
+import java_ssg.dto.Member;
 import java_ssg.util.Util;
 
 public class App {
 
 	private List<ArticleClass> articles1;
+	private List<Member> members;
 
 	public App() {
 		articles1 = new ArrayList<>();
+		members = new ArrayList<>();
 	}
 
 	public void start() {
@@ -54,13 +57,57 @@ public class App {
 
 				System.out.println(id + " 번 글이 생성되었습니다.");
 
+			} else if (command.equals("article join")) {
+				int id = members.size() + 1;
+
+				String regDate = Util.getNowDateStr();
+				String loginId = null;
+
+				while (true) {
+					System.out.println("아이디를 입력해 주세요 :");
+					loginId = sc.nextLine();
+
+					if (isJoinableLoginId(loginId) == false) {
+						System.out.println("이미 사용중인 아이디 입니다.");
+						continue;
+					}
+					break;
+				}
+
+				String loginPw = null;
+				String loginPwConfirm = null;
+
+				while (true) {
+
+					System.out.println("비밀번호를 입력해 주세요 :");
+					loginPw = sc.nextLine();
+					System.out.println("비밀번호를 다시한번 입력해주세요 :");
+					loginPwConfirm = sc.nextLine();
+					
+					if(loginPw.equals(loginPwConfirm) == false) {
+						System.out.println("비밀번호를 다시 입력해 주세요.");
+						continue;
+					}
+					break;
+					
+				}
+
+				System.out.println("이름을 입력해 주세요 :");
+				String name = sc.nextLine();
+
+				// member class
+				Member member = new Member(id, regDate, loginId, loginPw, name);
+				members.add(member);
+
+				System.out.println(id + " 번 회원이 생성되었습니다.");
+
 			} else if (command.startsWith("article list")) {
 
 				if (articles1.size() == 0) {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
-				
+
 				String searchKeyword = command.substring("article list".length()).trim();
 
 				List<ArticleClass> forListArticles = articles1;
@@ -175,6 +222,27 @@ public class App {
 
 		System.out.println("====프로그램 종료====");
 	}// main끝
+
+	private boolean isJoinableLoginId(String loginId) {
+		int index = getMemberIndexByLoginId(loginId); 
+		
+		if (index == -1) {
+			return true;
+		}
+		return false;
+	}
+
+	private int getMemberIndexByLoginId(String loginId) {
+		int i = 0;
+		
+		for (Member member : members) {
+			if(member.loginId.equals(loginId)) {
+				return i;
+			}
+			i++;
+		}
+		return -1;
+	}
 
 	private int getArticleIndexById(int id) {
 		int i = 0;

@@ -1,7 +1,7 @@
 package java_ssg.dto;
 
 //==============class==============
-public class ArticleClass {
+public class ArticleClass extends Dto {
 	public int id;
 	public String regDate;
 	public String title;
