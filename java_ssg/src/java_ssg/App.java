@@ -54,18 +54,36 @@ public class App {
 
 				System.out.println(id + " 번 글이 생성되었습니다.");
 
-			} else if (command.equals("article list")) {
+			} else if (command.startsWith("article list")) {
 
 				if (articles1.size() == 0) {
 					System.out.println("게시물이 없습니다.");
 					continue;
 				}
+				
+				String searchKeyword = command.substring("article list".length()).trim();
+
+				List<ArticleClass> forListArticles = articles1;
+
+				if (searchKeyword.length() > 0) {
+					forListArticles = new ArrayList<>();
+
+					for (ArticleClass article7 : articles1) {
+						if (article7.title.contains(searchKeyword)) {
+							forListArticles.add(article7);
+						}
+					}
+					if (articles1.size() == 0) {
+						System.out.println("검색 결과가 존재하지 않습니다.");
+						continue;
+					}
+				}
 
 				System.out.println("====LIST====");
 				System.out.println("번호  | 조회  | 제목");
 
-				for (int i = articles1.size() - 1; i >= 0; i--) {
-					ArticleClass article4 = articles1.get(i);
+				for (int i = forListArticles.size() - 1; i >= 0; i--) {
+					ArticleClass article4 = forListArticles.get(i);
 
 //					System.out.println("번호 : " + article4.id + " | 제목 : " + article4.title + " | 조회수 : " + article4.hit);
 					System.out.printf("%4d | %4d | %s\n", article4.id, article4.hit, article4.title);
@@ -125,9 +143,9 @@ public class App {
 			} else if (command.startsWith("article delete ")) {
 				String[] commandBits = command.split(" ");
 				int id = Integer.parseInt(commandBits[2]);
-				
+
 				int foundIndex = getArticleIndexById(id);
-				
+
 //				for (int i = 0; i < articles1.size(); i++) {
 //					ArticleClass article6 = articles1.get(i);
 //
@@ -171,7 +189,7 @@ public class App {
 
 	private ArticleClass getArticleById(int id) {
 		int index = getArticleIndexById(id);
-		
+
 		if (index != -1) {
 			return articles1.get(index);
 		}
